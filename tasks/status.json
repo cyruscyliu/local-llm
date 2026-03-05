@@ -137,7 +137,7 @@
     },
     {
       "id": "12_setup_node_exporter",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         "10_setup_prometheus"
       ],
