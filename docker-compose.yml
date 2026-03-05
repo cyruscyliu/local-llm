@@ -55,6 +55,19 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+  node-exporter:
+    image: prom/node-exporter
+    command: --path.rootfs=/host
+    pid: host
+    volumes:
+      - /:/host:ro,rslave
+    ports:
+      - "9100:9100"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9100/metrics"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
   prometheus:
     image: prom/prometheus
     volumes:
