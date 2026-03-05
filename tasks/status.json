@@ -159,7 +159,7 @@
     },
     {
       "id": "14_configure_observability_dashboards",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "11_setup_grafana",
         "12_setup_node_exporter",
