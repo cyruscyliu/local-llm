@@ -68,11 +68,11 @@
     },
     {
       "id": "06_deploy_vllm",
-      "status": "in_progress",
+      "status": "blocked",
       "depends_on": [
         "02_create_docker_compose_skeleton"
       ],
-      "retries": 2,
+      "retries": 3,
       "max_retries": 3,
       "outputs": {},
       "error": "verification commands failed"
