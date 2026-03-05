@@ -48,7 +48,7 @@ services:
     volumes:
       - ./models:/models
     entrypoint: python3 -m vllm.entrypoints.openai.api_server
-    command: ["--model", "HuggingFaceH4/tiny-random-LlamaForCausalLM", "--host", "0.0.0.0", "--port", "8000"]
+    command: ["--model", "Qwen/Qwen2.5-7B-Instruct", "--host", "0.0.0.0", "--port", "8000", "--max-model-len", "8192"]
     expose:
       - "8000"
     healthcheck:
