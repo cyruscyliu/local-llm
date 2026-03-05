@@ -24,7 +24,7 @@
     },
     {
       "id": "02_create_docker_compose_skeleton",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         "01_setup_repo_structure"
       ],
