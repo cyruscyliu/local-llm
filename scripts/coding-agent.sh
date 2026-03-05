@@ -318,6 +318,9 @@ run_verification() {
         return 0
     }
 
+    # Inject -T into docker-compose exec to disable TTY allocation
+    commands="$(echo "$commands" | sed 's/docker-compose exec /docker-compose exec -T /g')"
+
     log_info "Running verification for ${task_id}"
     local tmpout
     tmpout="$(mktemp)"
