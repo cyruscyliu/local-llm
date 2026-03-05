@@ -72,7 +72,7 @@
       "depends_on": [
         "02_create_docker_compose_skeleton"
       ],
-      "retries": 1,
+      "retries": 2,
       "max_retries": 3,
       "outputs": {},
       "error": "verification commands failed"
