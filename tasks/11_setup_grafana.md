@@ -24,8 +24,8 @@ The Grafana container is running, healthy, and accessible, with Prometheus confi
 ## Verification
 
 ```bash
-docker compose up -d grafana
-docker compose ps -q grafana | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d grafana
+docker-compose ps -q grafana | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost:3001/login # Check if Grafana login page is accessible
 ```
 

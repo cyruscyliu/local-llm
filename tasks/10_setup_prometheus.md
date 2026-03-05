@@ -25,8 +25,8 @@ The Prometheus container is running, healthy, and accessible, with its own metri
 ## Verification
 
 ```bash
-docker compose up -d prometheus
-docker compose ps -q prometheus | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d prometheus
+docker-compose ps -q prometheus | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost:9090/graph # Check if Prometheus UI is accessible
 ```
 

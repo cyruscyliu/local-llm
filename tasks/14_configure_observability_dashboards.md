@@ -29,7 +29,7 @@ Grafana displays comprehensive dashboards with data from all configured exporter
 ```bash
 # This verification is more complex as it requires interacting with Grafana's API or UI.
 # A simple check could be to ensure the provisioning files are correctly loaded.
-docker compose exec grafana ls /etc/grafana/provisioning/dashboards/
+docker-compose exec grafana ls /etc/grafana/provisioning/dashboards/
 # Manual verification: Access Grafana UI (http://localhost:3001) and confirm dashboards are present and populated.
 ```
 

@@ -20,7 +20,7 @@ None.
    - Small (1-4 hours), atomic, idempotent
    - Every task has Verification commands that fail if the task isn't done
    - Every task produces Outputs for downstream tasks (ports, container names, file paths, URLs)
-   - Minimize manual steps; prefer scripts and `docker compose` workflows
+   - Minimize manual steps; prefer scripts and `docker-compose` workflows
    - Prefer internal-only service exposure; reverse proxy handles ingress
 5. If `docs/project.md` is missing key details, add a task to clarify them instead of guessing.
 

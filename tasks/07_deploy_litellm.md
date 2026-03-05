@@ -26,8 +26,8 @@ The LiteLLM container is running, healthy, and can connect to PostgreSQL, Redis,
 ## Verification
 
 ```bash
-docker compose up -d litellm
-docker compose ps -q litellm | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d litellm
+docker-compose ps -q litellm | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost:4000/health # Assuming internal exposure allows localhost access from host or another container
 ```
 

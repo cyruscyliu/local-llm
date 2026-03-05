@@ -121,7 +121,7 @@ If you want this project to feel "popular", the task quality bar matters more th
 
 **Idempotency examples:**
 
-- Use `docker compose up -d` (idempotent) instead of `docker create`
+- Use `docker-compose up -d` (idempotent) instead of `docker create`
 - Use `CREATE TABLE IF NOT EXISTS` instead of `CREATE TABLE`
 - Check if a file exists before writing it
 - Use `--force-recreate` flags where appropriate
@@ -438,7 +438,7 @@ Constraints:
 - Tasks must be small (1-4 hours each), atomic, and idempotent.
 - Every task must include Verification commands that fail if the task isn't done.
 - Tasks must produce Outputs that downstream tasks can consume (ports, container names, file paths, URLs).
-- Minimize manual steps; prefer scripts and `docker compose` workflows.
+- Minimize manual steps; prefer scripts and `docker-compose` workflows.
 
 Deliverables:
 1) A proposed ordered task list (id, short name, goal, dependencies).

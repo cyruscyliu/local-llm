@@ -8,7 +8,7 @@ sudo apt-get install -y \
   ca-certificates \
   coreutils \
   curl \
-  docker-compose-plugin \
+  docker-compose \
   docker.io \
   git \
   jq \

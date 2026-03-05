@@ -22,7 +22,7 @@ A valid `docker-compose.yml` file exists at the repository root.
 
 ```bash
 test -f docker-compose.yml
-docker compose config
+docker-compose config
 ```
 
 ## Outputs

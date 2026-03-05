@@ -176,7 +176,7 @@ None.
    - Small (1-4 hours), atomic, idempotent
    - Every task has Verification commands that fail if the task isn't done
    - Every task produces Outputs for downstream tasks (ports, container names, file paths, URLs)
-   - Minimize manual steps; prefer scripts and `docker compose` workflows
+   - Minimize manual steps; prefer scripts and `docker-compose` workflows
    - Prefer internal-only service exposure; reverse proxy handles ingress
 5. If `docs/project.md` is missing key details, add a task to clarify them instead of guessing.
 
@@ -239,7 +239,7 @@ Constraints for the generated plan:
 - Tasks must be small (1-4 hours), atomic, and idempotent.
 - Every task must include a \`\`\`bash\`\`\` Verification block that fails when the task isn't complete.
 - Tasks must include Outputs that downstream tasks can consume (ports, container names, file paths, URLs).
-- Minimize manual steps; prefer scripts and docker compose workflows.
+- Minimize manual steps; prefer scripts and docker-compose workflows.
 - If docs/project.md is missing key details, add explicit clarification tasks (do not guess).
 
 Important:
@@ -507,8 +507,8 @@ main() {
 
     # Stop any containers started during task execution
     if [[ "$DRY_RUN" != "true" ]] && [[ -f "${REPO_ROOT}/docker-compose.yml" ]]; then
-        log_info "Stopping docker compose services"
-        docker compose -f "${REPO_ROOT}/docker-compose.yml" down 2>/dev/null || true
+        log_info "Stopping docker-compose services"
+        docker-compose -f "${REPO_ROOT}/docker-compose.yml" down 2>/dev/null || true
     fi
 }
 

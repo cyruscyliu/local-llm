@@ -23,9 +23,9 @@ The Redis container is running, healthy, and accessible on the internal Docker n
 ## Verification
 
 ```bash
-docker compose up -d redis
-docker compose ps -q redis | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
-docker compose exec redis redis-cli ping
+docker-compose up -d redis
+docker-compose ps -q redis | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose exec redis redis-cli ping
 ```
 
 ## Outputs

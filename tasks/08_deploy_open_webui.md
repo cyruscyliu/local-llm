@@ -23,8 +23,8 @@ The Open WebUI container is running, healthy, and can connect to LiteLLM.
 ## Verification
 
 ```bash
-docker compose up -d open-webui
-docker compose ps -q open-webui | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d open-webui
+docker-compose ps -q open-webui | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost:3000 # Assuming internal exposure allows localhost access from host or another container
 ```
 

@@ -23,8 +23,8 @@ The Node Exporter container is running, healthy, and Prometheus is successfully 
 ## Verification
 
 ```bash
-docker compose up -d node-exporter
-docker compose ps -q node-exporter | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d node-exporter
+docker-compose ps -q node-exporter | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost:9100/metrics # Check if Node Exporter metrics are accessible
 # Verify Prometheus is scraping: check Prometheus UI -> Status -> Targets
 ```

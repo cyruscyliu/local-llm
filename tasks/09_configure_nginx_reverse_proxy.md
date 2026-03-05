@@ -27,8 +27,8 @@ The Nginx container is running, healthy, and correctly routing requests to Open 
 ## Verification
 
 ```bash
-docker compose up -d nginx
-docker compose ps -q nginx | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d nginx
+docker-compose ps -q nginx | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost/ # Should return content from Open WebUI
 curl -f http://localhost/api/health # Should return health status from LiteLLM
 ```

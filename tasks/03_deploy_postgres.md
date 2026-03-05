@@ -24,9 +24,9 @@ The PostgreSQL container is running, healthy, and accessible on the internal Doc
 ## Verification
 
 ```bash
-docker compose up -d postgres
-docker compose ps -q postgres | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
-docker compose exec postgres pg_isready -U postgres
+docker-compose up -d postgres
+docker-compose ps -q postgres | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose exec postgres pg_isready -U postgres
 ```
 
 ## Outputs

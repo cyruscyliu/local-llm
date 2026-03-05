@@ -23,8 +23,8 @@ The vLLM service successfully loads the specified model and is ready to serve in
 ## Verification
 
 ```bash
-docker compose up -d vllm
-docker compose logs vllm | grep "Loaded model"
+docker-compose up -d vllm
+docker-compose logs vllm | grep "Loaded model"
 curl -f http://localhost:8000/v1/models # Should list the loaded model
 ```
 

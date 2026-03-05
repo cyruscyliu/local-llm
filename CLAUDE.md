@@ -26,7 +26,7 @@ Read `docs/guide.md` for how the task system works.
 - Do not push to remote repositories.
 - Do not commit -- the outer script handles git commits.
 - Stay within allowed paths: `docker/`, `infra/`, `configs/`, `scripts/`, `data/`, `models/`, `docs/`, `tasks/`.
-- Prefer `docker compose` for service management.
+- Prefer `docker-compose` for service management.
 - Prefer `set -e` style commands that fail loudly on error.
 
 ### Bootstrap Exception (Task 00)

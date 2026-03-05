@@ -24,8 +24,8 @@ The NVIDIA DCGM Exporter container is running, healthy, and Prometheus is succes
 ## Verification
 
 ```bash
-docker compose up -d dcgm-exporter
-docker compose ps -q dcgm-exporter | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d dcgm-exporter
+docker-compose ps -q dcgm-exporter | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost:9400/metrics # Check if DCGM Exporter metrics are accessible
 # Verify Prometheus is scraping: check Prometheus UI -> Status -> Targets
 ```

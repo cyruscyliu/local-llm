@@ -23,8 +23,8 @@ The Qdrant container is running, healthy, and accessible on the internal Docker 
 ## Verification
 
 ```bash
-docker compose up -d qdrant
-docker compose ps -q qdrant | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose up -d qdrant
+docker-compose ps -q qdrant | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
 curl -f http://localhost:6333/healthz # Assuming internal exposure allows localhost access from host or another container
 ```
 
