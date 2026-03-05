@@ -2,9 +2,9 @@
   "tasks": [
     {
       "id": "00_generate_task_plan",
-      "status": "in_progress",
+      "status": "failed",
       "depends_on": [],
-      "retries": 1,
+      "retries": 2,
       "max_retries": 3,
       "outputs": {},
       "error": "backend 'gemini' exited with error"
