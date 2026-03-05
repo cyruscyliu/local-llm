@@ -14,17 +14,21 @@ run_backend_claude() {
 }
 
 # ── Gemini (Google) ─────────────────────────────────────────────────
-# Uses: gemini CLI
+# Uses: Gemini function-calling API via scripts/lib/gemini_agent.py.
+# No CLI or SDK install required -- only python3 + urllib (stdlib).
 # Expects GEMINI_API_KEY in environment.
+# Model can be overridden with GEMINI_MODEL (default: gemini-2.5-flash).
 run_backend_gemini() {
     local task_timeout="$1"
-    if command -v gemini &>/dev/null; then
-        timeout "$task_timeout" gemini
-    else
-        echo "ERROR: backend 'gemini' requires the 'gemini' CLI to be installed and on PATH." >&2
-        echo "Also ensure GEMINI_API_KEY is set." >&2
+    local agent_script
+    agent_script="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/gemini_agent.py"
+
+    if [[ ! -f "$agent_script" ]]; then
+        echo "ERROR: gemini agent not found at ${agent_script}" >&2
         return 1
     fi
+
+    REPO_ROOT="$REPO_ROOT" timeout "$task_timeout" python3 "$agent_script"
 }
 
 # ── Codex (OpenAI) ──────────────────────────────────────────────────

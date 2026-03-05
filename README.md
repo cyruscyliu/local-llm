@@ -6,9 +6,6 @@
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl coreutils git jq \
   make nodejs npm python3 python3-pip
-
-sudo npm install -g @google/gemini-cli
-gemini --version
 ```
 
 ## Configure
