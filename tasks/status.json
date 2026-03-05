@@ -2,7 +2,7 @@
   "tasks": [
     {
       "id": "01_setup_repo",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [],
       "retries": 0,
       "max_retries": 3,
@@ -12,7 +12,9 @@
     {
       "id": "02_setup_docker",
       "status": "pending",
-      "depends_on": ["01_setup_repo"],
+      "depends_on": [
+        "01_setup_repo"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -21,7 +23,9 @@
     {
       "id": "03_deploy_postgres",
       "status": "pending",
-      "depends_on": ["02_setup_docker"],
+      "depends_on": [
+        "02_setup_docker"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -30,7 +34,9 @@
     {
       "id": "04_deploy_redis",
       "status": "pending",
-      "depends_on": ["02_setup_docker"],
+      "depends_on": [
+        "02_setup_docker"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -39,7 +45,9 @@
     {
       "id": "05_deploy_qdrant",
       "status": "pending",
-      "depends_on": ["02_setup_docker"],
+      "depends_on": [
+        "02_setup_docker"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -48,7 +56,9 @@
     {
       "id": "06_deploy_vllm",
       "status": "pending",
-      "depends_on": ["02_setup_docker"],
+      "depends_on": [
+        "02_setup_docker"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -57,7 +67,11 @@
     {
       "id": "07_deploy_litellm",
       "status": "pending",
-      "depends_on": ["03_deploy_postgres", "04_deploy_redis", "06_deploy_vllm"],
+      "depends_on": [
+        "03_deploy_postgres",
+        "04_deploy_redis",
+        "06_deploy_vllm"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -66,7 +80,9 @@
     {
       "id": "08_deploy_openwebui",
       "status": "pending",
-      "depends_on": ["07_deploy_litellm"],
+      "depends_on": [
+        "07_deploy_litellm"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -75,7 +91,10 @@
     {
       "id": "09_setup_reverse_proxy",
       "status": "pending",
-      "depends_on": ["07_deploy_litellm", "08_deploy_openwebui"],
+      "depends_on": [
+        "07_deploy_litellm",
+        "08_deploy_openwebui"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -84,7 +103,10 @@
     {
       "id": "10_setup_monitoring",
       "status": "pending",
-      "depends_on": ["06_deploy_vllm", "07_deploy_litellm"],
+      "depends_on": [
+        "06_deploy_vllm",
+        "07_deploy_litellm"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -93,7 +115,9 @@
     {
       "id": "11_setup_logging",
       "status": "pending",
-      "depends_on": ["10_setup_monitoring"],
+      "depends_on": [
+        "10_setup_monitoring"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -102,7 +126,9 @@
     {
       "id": "12_setup_grafana_dashboards",
       "status": "pending",
-      "depends_on": ["10_setup_monitoring"],
+      "depends_on": [
+        "10_setup_monitoring"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -111,7 +137,10 @@
     {
       "id": "13_setup_automation_hooks",
       "status": "pending",
-      "depends_on": ["09_setup_reverse_proxy", "12_setup_grafana_dashboards"],
+      "depends_on": [
+        "09_setup_reverse_proxy",
+        "12_setup_grafana_dashboards"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -120,7 +149,9 @@
     {
       "id": "14_build_coding_agent",
       "status": "pending",
-      "depends_on": ["01_setup_repo"],
+      "depends_on": [
+        "01_setup_repo"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -129,7 +160,10 @@
     {
       "id": "15_build_maintenance_agent",
       "status": "pending",
-      "depends_on": ["13_setup_automation_hooks", "10_setup_monitoring"],
+      "depends_on": [
+        "13_setup_automation_hooks",
+        "10_setup_monitoring"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -138,7 +172,10 @@
     {
       "id": "16_enable_rag",
       "status": "pending",
-      "depends_on": ["05_deploy_qdrant", "08_deploy_openwebui"],
+      "depends_on": [
+        "05_deploy_qdrant",
+        "08_deploy_openwebui"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -147,7 +184,9 @@
     {
       "id": "17_end_to_end_smoke_test",
       "status": "pending",
-      "depends_on": ["09_setup_reverse_proxy"],
+      "depends_on": [
+        "09_setup_reverse_proxy"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -156,7 +195,9 @@
     {
       "id": "18_deploy_minio_optional",
       "status": "pending",
-      "depends_on": ["02_setup_docker"],
+      "depends_on": [
+        "02_setup_docker"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
