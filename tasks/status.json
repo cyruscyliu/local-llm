@@ -168,7 +168,7 @@
     },
     {
       "id": "16_add_model_to_vllm",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         "06_deploy_vllm"
       ],
