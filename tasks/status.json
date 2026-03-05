@@ -159,13 +159,13 @@
     },
     {
       "id": "14_configure_observability_dashboards",
-      "status": "in_progress",
+      "status": "failed",
       "depends_on": [
         "11_setup_grafana",
         "12_setup_node_exporter",
         "13_setup_nvidia_gpu_exporter"
       ],
-      "retries": 1,
+      "retries": 2,
       "max_retries": 3,
       "outputs": {},
       "error": "verification commands failed"
