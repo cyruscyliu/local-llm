@@ -94,7 +94,7 @@
     },
     {
       "id": "09_configure_nginx_reverse_proxy",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         "08_deploy_open_webui",
         "07_deploy_litellm"
