@@ -15,4 +15,15 @@ auto_commit: true
 task_timeout: "30m"
 
 # Log file path (relative to repo root; empty = no file logging)
-# log_file: "data/coding-agent/agent.log"
+log_file: "data/coding-agent/agent.log"
+
+# Discord notifications (optional).
+# Recommended: set the URL via env var instead of committing secrets.
+#
+# Environment variable:
+#   CODING_AGENT_DISCORD_WEBHOOK_URL
+#
+# discord_webhook_url: "https://discord.com/api/webhooks/..."
+discord_notify_on_blocked: true
+discord_notify_on_failed: false
+discord_notify_on_done: false

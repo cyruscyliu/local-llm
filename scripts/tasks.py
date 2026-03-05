@@ -74,10 +74,14 @@ def _load_tasks(status_path: str) -> Tuple[Dict[str, Any], List[Task]]:
 
 
 def _task_index(tasks: Iterable[Task]) -> Dict[str, Task]:
-    idx = {t.id: t for t in tasks}
-    dupes = [t.id for t in tasks if list(idx.keys()).count(t.id) > 1]
+    idx: Dict[str, Task] = {}
+    dupes = set()
+    for t in tasks:
+        if t.id in idx:
+            dupes.add(t.id)
+        idx[t.id] = t
     if dupes:
-        raise SystemExit(f"duplicate task ids in status.json: {sorted(set(dupes))}")
+        raise SystemExit(f"duplicate task ids in status.json: {sorted(dupes)}")
     return idx
 
 
@@ -214,7 +218,9 @@ def cmd_output(status_path: str, task_id: str, kvs: List[str]) -> int:
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(prog="tasks.py", description="Helper for tasks/status.json")
     p.add_argument(
+        "--status",
         "--status-file",
+        dest="status_path",
         default=os.path.join("tasks", "status.json"),
         help="Path to status.json (default: tasks/status.json)",
     )
@@ -237,7 +243,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     p_out.add_argument("kv", nargs="+", help="One or more KEY=VALUE pairs")
 
     args = p.parse_args(argv)
-    status_path = args.status_file
+    status_path = args.status_path
 
     if args.cmd == "summary":
         return cmd_summary(status_path)
@@ -260,4 +266,3 @@ def main(argv: Optional[List[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -24,9 +24,18 @@ Read `docs/guide.md` for how the task system works.
 - Do not run destructive commands (`rm -rf /`, `docker system prune -af`, etc.).
 - Do not push to remote repositories.
 - Do not commit -- the outer script handles git commits.
-- Stay within allowed paths: `docker/`, `infra/`, `configs/`, `scripts/`, `data/`, `models/`.
+- Stay within allowed paths: `docker/`, `infra/`, `configs/`, `scripts/`, `data/`, `models/`, `docs/`, `tasks/`.
 - Prefer `docker compose` for service management.
 - Prefer `set -e` style commands that fail loudly on error.
+
+### Bootstrap Exception (Task 00)
+
+If you are executing `00_generate_task_plan`, you *are expected* to:
+
+- Create/edit `tasks/*.md`
+- Create/update `tasks/status.json` to define the full task plan
+
+Do not implement the platform in Task 00; generate the plan only. The outer loop will execute the generated tasks afterwards.
 
 ## Task File Format
 

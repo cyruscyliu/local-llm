@@ -428,6 +428,8 @@ I want to add: [describe the capability].
 
 Use this when you have a solid `docs/project.md` but the task plan is missing or low quality.
 
+Recommended pattern for “start from scratch” repos: make this the first task as `tasks/00_generate_task_plan.md`, and have the coding agent auto-bootstrap it when `tasks/status.json` is missing.
+
 ```
 Read docs/project.md.
 
