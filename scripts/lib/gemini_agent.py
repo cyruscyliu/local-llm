@@ -19,7 +19,7 @@ import urllib.request
 API_KEY = os.environ.get("GEMINI_API_KEY", "")
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 BASE_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}"
-MAX_TURNS = int(os.environ.get("GEMINI_MAX_TURNS", "30"))
+MAX_TURNS = int(os.environ.get("GEMINI_MAX_TURNS", "60"))
 CMD_TIMEOUT = int(os.environ.get("GEMINI_CMD_TIMEOUT", "120"))
 
 TOOLS = [

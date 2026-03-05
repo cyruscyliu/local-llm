@@ -255,6 +255,27 @@ PROMPT
         return 0
     fi
 
+    local retries
+    retries="$(get_task_retries "$task_id")"
+    local prev_error
+    prev_error="$(python3 -c "
+import json
+with open('$STATUS_JSON') as f:
+    data = json.load(f)
+for t in data['tasks']:
+    if t['id'] == '$task_id':
+        print(t.get('error') or '')
+        break
+")"
+
+    local retry_context=""
+    if [[ "$retries" -gt 0 && -n "$prev_error" ]]; then
+        retry_context="
+RETRY CONTEXT (attempt $((retries + 1))):
+Previous attempt failed with: ${prev_error}
+"
+    fi
+
     cat <<PROMPT
 You are implementing task "${task_id}" for this project.
 
@@ -263,11 +284,12 @@ Read and follow the task file exactly: tasks/${task_id}.md
 After implementing all steps, run the Verification commands from the task file.
 If verification passes, the task is done.
 If verification fails, fix the issue and retry.
-
+${retry_context}
 Important:
 - Make changes idempotent (safe to re-run).
 - Only modify files within the project repository.
 - Do not modify tasks/status.json -- the outer script handles that.
+- You MAY modify the task file (tasks/${task_id}.md) if the steps or verification commands are wrong.
 - Do not run destructive commands (rm -rf, etc.).
 - Commit messages are handled by the outer script.
 
