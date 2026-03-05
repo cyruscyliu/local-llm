@@ -168,6 +168,7 @@ def execute_tool(name, args):
             result = subprocess.run(
                 cmd,
                 shell=True,
+                stdin=subprocess.DEVNULL,
                 capture_output=True,
                 text=True,
                 timeout=CMD_TIMEOUT,

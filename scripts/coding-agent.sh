@@ -297,7 +297,7 @@ run_verification() {
     (
         cd "$REPO_ROOT"
         set -e
-        eval "$commands"
+        eval "$commands" < /dev/null
     )
 }
 
