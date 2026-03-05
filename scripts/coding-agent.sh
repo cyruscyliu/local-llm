@@ -289,10 +289,6 @@ run_verification() {
         return 0
     }
 
-    # Force non-interactive mode for docker compose exec (idempotent)
-    commands="${commands//docker compose exec -T /docker compose exec }"
-    commands="${commands//docker compose exec /docker compose exec -T }"
-
     log_info "Running verification for ${task_id}"
     (
         cd "$REPO_ROOT"
