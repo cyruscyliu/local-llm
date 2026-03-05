@@ -272,7 +272,11 @@ for t in data['tasks']:
     if [[ "$retries" -gt 0 && -n "$prev_error" ]]; then
         retry_context="
 RETRY CONTEXT (attempt $((retries + 1))):
-Previous attempt failed with: ${prev_error}
+Previous attempt failed with the following output:
+---
+${prev_error}
+---
+Think carefully about what went wrong. Analyze the error output above, identify the root cause, and fix it before retrying.
 "
     fi
 
@@ -300,6 +304,8 @@ $(cat "$task_file")
 PROMPT
 }
 
+VERIFICATION_OUTPUT=""
+
 run_verification() {
     local task_id="$1"
     local task_file
@@ -308,15 +314,22 @@ run_verification() {
     local commands
     commands="$(extract_verification "$task_file")" || {
         log_warn "No verification commands found for ${task_id}"
+        VERIFICATION_OUTPUT=""
         return 0
     }
 
     log_info "Running verification for ${task_id}"
+    local tmpout
+    tmpout="$(mktemp)"
+    local rc=0
     (
         cd "$REPO_ROOT"
         set -e
         eval "$commands" < /dev/null
-    )
+    ) >"$tmpout" 2>&1 || rc=$?
+    VERIFICATION_OUTPUT="$(tail -c 2000 "$tmpout")"
+    rm -f "$tmpout"
+    return "$rc"
 }
 
 do_git_commit() {
@@ -364,21 +377,13 @@ handle_failure() {
     local error_msg="${2:-verification failed}"
 
     increment_retries "$task_id"
-    local retries max_retries
+    local retries
     retries="$(get_task_retries "$task_id")"
-    max_retries="$(get_task_max_retries "$task_id")"
 
-    if [[ "$retries" -ge "$max_retries" ]]; then
-        log_error "Task ${task_id} blocked after ${retries} retries"
-        update_task_status "$task_id" "blocked" "$error_msg"
-        do_status_commit "$task_id" "blocked"
-        discord_post "BLOCKED: ${task_id} after ${retries} retries\nError: ${error_msg}"
-    else
-        log_warn "Task ${task_id} failed (retry ${retries}/${max_retries}): ${error_msg}"
-        update_task_status "$task_id" "failed" "$error_msg"
-        do_status_commit "$task_id" "failed"
-        discord_post "FAILED: ${task_id} (${retries}/${max_retries})\nError: ${error_msg}"
-    fi
+    log_warn "Task ${task_id} failed (attempt ${retries}): ${error_msg}"
+    update_task_status "$task_id" "failed" "$error_msg"
+    do_status_commit "$task_id" "failed"
+    discord_post "FAILED: ${task_id} (attempt ${retries})\nError: ${error_msg}"
 }
 
 run_task() {
@@ -451,7 +456,11 @@ run_task() {
         return 0
     else
         log_error "Verification failed for ${task_id}"
-        handle_failure "$task_id" "verification commands failed"
+        local verif_error="verification failed"
+        if [[ -n "$VERIFICATION_OUTPUT" ]]; then
+            verif_error="verification failed: ${VERIFICATION_OUTPUT}"
+        fi
+        handle_failure "$task_id" "$verif_error"
         return 1
     fi
 }
