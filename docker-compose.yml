@@ -48,7 +48,7 @@ services:
     volumes:
       - ./models:/models
     entrypoint: python3 -m vllm.entrypoints.openai.api_server
-    command: ["--model", "/models/placeholder-model", "--host", "0.0.0.0", "--port", "8000"]
+    command: ["--model", "HuggingFaceH4/tiny-random-LlamaForCausalLM", "--host", "0.0.0.0", "--port", "8000"]
     expose:
       - "8000"
     healthcheck:
@@ -135,3 +135,17 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      OLLAMA_API_BASE_URL: http://litellm:4000
+    ports:
+      - "3000:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    depends_on:
+      - litellm
