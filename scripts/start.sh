@@ -11,7 +11,14 @@ log() { echo "[$(date '+%H:%M:%S')] $*"; }
 log "Pulling images..."
 docker-compose pull
 
-# 2. Start infrastructure first (no GPU needed)
+# 2. Fix data directory permissions
+log "Fixing data directory permissions..."
+mkdir -p data/prometheus data/grafana data/qdrant
+sudo chown -R 65534:65534 data/prometheus
+sudo chown -R 472:472 data/grafana
+sudo chown -R 1000:1000 data/qdrant
+
+# 3. Start infrastructure first (no GPU needed)
 log "Starting infrastructure (postgres, redis, qdrant, prometheus, node-exporter, grafana)..."
 docker-compose up -d postgres redis qdrant prometheus node-exporter grafana
 
