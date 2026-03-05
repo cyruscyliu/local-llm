@@ -137,7 +137,7 @@
     },
     {
       "id": "12_setup_node_exporter",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "10_setup_prometheus"
       ],
