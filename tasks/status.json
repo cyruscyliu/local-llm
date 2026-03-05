@@ -72,7 +72,7 @@
     },
     {
       "id": "07_deploy_litellm",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "03_deploy_postgres",
         "04_deploy_redis",
