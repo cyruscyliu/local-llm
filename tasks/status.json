@@ -168,13 +168,13 @@
     },
     {
       "id": "16_add_model_to_vllm",
-      "status": "in_progress",
+      "status": "failed",
       "depends_on": [
         "06_deploy_vllm"
       ],
-      "retries": 0,
+      "retries": 1,
       "outputs": {},
-      "error": null
+      "error": "verification failed: Recreating local-llm_vllm_1 ... \r\nRecreating local-llm_vllm_1 ... done\r\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\ncurl: (7) Failed to connect to localhost port 8000 after 0 ms: Couldn't connect to server"
     }
   ]
 }
