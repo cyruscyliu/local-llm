@@ -482,6 +482,12 @@ main() {
 
         sleep 2
     done
+
+    # Stop any containers started during task execution
+    if [[ "$DRY_RUN" != "true" ]] && [[ -f "${REPO_ROOT}/docker-compose.yml" ]]; then
+        log_info "Stopping docker compose services"
+        docker compose -f "${REPO_ROOT}/docker-compose.yml" down 2>/dev/null || true
+    fi
 }
 
 main
