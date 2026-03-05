@@ -148,14 +148,14 @@
     },
     {
       "id": "13_setup_nvidia_gpu_exporter",
-      "status": "in_progress",
+      "status": "failed",
       "depends_on": [
         "10_setup_prometheus"
       ],
-      "retries": 0,
+      "retries": 1,
       "max_retries": 3,
       "outputs": {},
-      "error": null
+      "error": "verification commands failed"
     },
     {
       "id": "14_configure_observability_dashboards",
