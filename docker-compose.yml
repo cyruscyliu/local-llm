@@ -138,7 +138,9 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     environment:
-      OLLAMA_API_BASE_URL: http://litellm:4000
+      OPENAI_API_BASE_URL: http://litellm:4000/v1
+      OPENAI_API_KEY: sk-1234
+      ENABLE_OLLAMA_API: "false"
     ports:
       - "3000:8080"
     healthcheck:
