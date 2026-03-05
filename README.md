@@ -4,8 +4,18 @@
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y ca-certificates curl coreutils git jq \
-  make nodejs npm python3 python3-pip
+sudo apt-get install -y \
+  ca-certificates \
+  coreutils \
+  curl \
+  docker-compose-plugin \
+  docker.io \
+  git \
+  jq \
+  make \
+  nodejs \
+  python3 \
+  python3-pip
 ```
 
 ## Configure
