@@ -120,6 +120,12 @@ If you want this project to feel "popular", the task quality bar matters more th
 **Idempotency examples:**
 
 - Use `docker-compose up -d` (idempotent) instead of `docker create`
+- After `docker-compose up -d`, wait for health checks before verifying:
+  ```bash
+  docker-compose up -d <service>
+  timeout 120 bash -c 'until docker-compose exec -T <service> true 2>/dev/null; do sleep 2; done'
+  ```
+- Always use `docker-compose exec -T` (disable TTY) in scripts and verification commands
 - Use `CREATE TABLE IF NOT EXISTS` instead of `CREATE TABLE`
 - Check if a file exists before writing it
 - Use `--force-recreate` flags where appropriate
