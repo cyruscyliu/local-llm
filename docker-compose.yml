@@ -47,7 +47,8 @@ services:
               capabilities: [gpu]
     volumes:
       - ./models:/models
-    command: sh -c "vllm serve --model /models/placeholder-model --host 0.0.0.0 --port 8000 || tail -f /dev/null"
+    entrypoint: python3 -m vllm.entrypoints.openai.api_server
+    command: ["--model", "/models/placeholder-model", "--host", "0.0.0.0", "--port", "8000"]
     expose:
       - "8000"
     healthcheck:
@@ -55,7 +56,24 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+      start_period: 120s
+  litellm:
+    image: litellm/litellm:latest
+    command: --config /app/configs/litellm.yaml
+    volumes:
+      - ./configs/litellm.yaml:/app/configs/litellm.yaml
+    ports:
+      - "4000:4000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
       start_period: 30s
+    depends_on:
+      - postgres
+      - redis
+      - vllm
   node-exporter:
     image: prom/node-exporter
     command: --path.rootfs=/host
