@@ -214,7 +214,7 @@ def cmd_output(status_path: str, task_id: str, kvs: List[str]) -> int:
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(prog="tasks.py", description="Helper for tasks/status.json")
     p.add_argument(
-        "--status",
+        "--status-file",
         default=os.path.join("tasks", "status.json"),
         help="Path to status.json (default: tasks/status.json)",
     )
@@ -237,7 +237,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     p_out.add_argument("kv", nargs="+", help="One or more KEY=VALUE pairs")
 
     args = p.parse_args(argv)
-    status_path = args.status
+    status_path = args.status_file
 
     if args.cmd == "summary":
         return cmd_summary(status_path)

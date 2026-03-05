@@ -2,7 +2,7 @@
   "tasks": [
     {
       "id": "01_setup_repo",
-      "status": "in_progress",
+      "status": "pending",
       "depends_on": [],
       "retries": 0,
       "max_retries": 3,

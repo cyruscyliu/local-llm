@@ -3,7 +3,7 @@
 ## Goal
 
 Create the maintenance agent that monitors the running platform and takes
-corrective action, following the design in `docs/autonomous-maintenance-agent.md`.
+corrective action, following the design in `docs/guide.md` (Maintenance Agent section).
 
 ## Dependencies
 

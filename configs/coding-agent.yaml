@@ -1,0 +1,18 @@
+# Coding agent configuration
+#
+# Override any of these with environment variables (CODING_AGENT_*) or CLI flags.
+
+# LLM backend to use: claude, gemini, codex, aider, custom
+backend: gemini
+
+# Git branch prefix for task branches
+git_branch_prefix: "task/"
+
+# Automatically commit after each task
+auto_commit: true
+
+# Per-task timeout (Go duration format: 30m, 1h, etc.)
+task_timeout: "30m"
+
+# Log file path (relative to repo root; empty = no file logging)
+# log_file: "data/coding-agent/agent.log"

@@ -47,7 +47,7 @@ Benefits:
 
 -   Development isolated from production
 -   Reproducible deployments
--   Automated updates via coding agent (see [autonomous-coding-agent.md](autonomous-coding-agent.md))
+-   Automated updates via coding agent (see [guide.md](guide.md#coding-agent))
 
 ------------------------------------------------------------------------
 
@@ -250,7 +250,7 @@ Example command:
 docker restart vllm
 
 These scripts are callable by the autonomous maintenance agent
-(see [autonomous-maintenance-agent.md](autonomous-maintenance-agent.md)).
+(see [guide.md](guide.md#maintenance-agent)).
 
 ------------------------------------------------------------------------
 
@@ -259,10 +259,10 @@ These scripts are callable by the autonomous maintenance agent
 This project uses two types of autonomous agents:
 
 1.  **Coding Agent** -- builds and deploys the platform by working
-    through task files. See [autonomous-coding-agent.md](autonomous-coding-agent.md).
+    through task files. See [guide.md](guide.md#coding-agent).
 
 2.  **Maintenance Agent** -- monitors and maintains the running platform.
-    See [autonomous-maintenance-agent.md](autonomous-maintenance-agent.md).
+    See [guide.md](guide.md#maintenance-agent).
 
 ------------------------------------------------------------------------
 

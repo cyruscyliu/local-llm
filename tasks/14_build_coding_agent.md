@@ -3,7 +3,7 @@
 ## Goal
 
 Create the coding agent that reads task files and executes them autonomously,
-following the design in `docs/autonomous-coding-agent.md`.
+following the design in `docs/guide.md` (Coding Agent section).
 
 ## Dependencies
 
@@ -41,7 +41,7 @@ following the design in `docs/autonomous-coding-agent.md`.
    - Instruct the agent to read `tasks/status.json`
    - Instruct it to follow the task file format
    - Define safety boundaries and allowed paths
-   - Reference `docs/autonomous-coding-agent.md` for full design
+   - Reference `docs/guide.md` for full design
 
 ## Expected Outcome
 
