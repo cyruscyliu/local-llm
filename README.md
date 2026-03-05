@@ -1,20 +1,15 @@
 # Local LLM Platform
 
-## Bootstrap
-
-If you drop into a new repo with only `docs/project.md` + `docs/guide.md`, the
-coding agent can bootstrap the plan:
+## Install dependencies
 
 ```bash
-./scripts/coding-agent.sh --dry-run
-./scripts/coding-agent-wrapper.sh --loop
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl coreutils git jq \
+  make nodejs npm python3 python3-pip
+
+sudo npm install -g @google/gemini-cli
+gemini --version
 ```
-
-When `tasks/status.json` is missing/empty, the agent creates and runs
-`tasks/00_generate_task_plan.md`, which generates:
-
-- `tasks/status.json` (full dependency graph)
-- `tasks/NN_*.md` task files
 
 ## Configure
 
@@ -32,6 +27,19 @@ export GEMINI_API_KEY=...
 export CODING_AGENT_DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
 ```
 
+## Vibe coding and execution
+
+```bash
+./scripts/coding-agent.sh --dry-run
+./scripts/coding-agent-wrapper.sh --loop
+```
+
+When `tasks/status.json` is missing/empty, the agent creates and runs
+`tasks/00_generate_task_plan.md`, which generates:
+
+- `tasks/status.json` (full dependency graph)
+- `tasks/NN_*.md` task files
+
 ## Common Commands
 
 ```bash
@@ -43,4 +51,3 @@ make task-next
 ## License
 
 TBD.
-

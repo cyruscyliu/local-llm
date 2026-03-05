@@ -15,25 +15,15 @@ run_backend_claude() {
 
 # ── Gemini (Google) ─────────────────────────────────────────────────
 # Uses: gemini CLI
-# Install: pip install google-generativeai
 # Expects GEMINI_API_KEY in environment.
 run_backend_gemini() {
     local task_timeout="$1"
-    # gemini CLI reads from stdin with --prompt flag or piped input
     if command -v gemini &>/dev/null; then
         timeout "$task_timeout" gemini
     else
-        # Fallback: use the Python SDK directly
-        local prompt
-        prompt="$(cat)"
-        timeout "$task_timeout" python3 -c "
-import google.generativeai as genai
-import os, sys
-genai.configure(api_key=os.environ['GEMINI_API_KEY'])
-model = genai.GenerativeModel('gemini-2.5-flash')
-response = model.generate_content(sys.stdin.read())
-print(response.text)
-" <<< "$prompt"
+        echo "ERROR: backend 'gemini' requires the 'gemini' CLI to be installed and on PATH." >&2
+        echo "Also ensure GEMINI_API_KEY is set." >&2
+        return 1
     fi
 }
 
