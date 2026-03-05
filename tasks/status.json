@@ -2,7 +2,7 @@
   "tasks": [
     {
       "id": "00_generate_task_plan",
-      "status": "failed",
+      "status": "in_progress",
       "depends_on": [],
       "retries": 1,
       "max_retries": 3,
