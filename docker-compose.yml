@@ -99,3 +99,19 @@ services:
       retries: 5
     depends_on:
       - prometheus
+  dcgm-exporter:
+    image: nvidia/dcgm-exporter
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "9400:9400"
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -tuln | grep 9400 || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
