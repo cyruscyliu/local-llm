@@ -85,6 +85,10 @@ def _task_index(tasks: Iterable[Task]) -> Dict[str, Task]:
     return idx
 
 
+def _is_retryable(task: Task) -> bool:
+    return task.status == "failed" and task.retries < task.max_retries
+
+
 def _runnable(tasks: List[Task]) -> List[Task]:
     idx = _task_index(tasks)
 
@@ -94,7 +98,7 @@ def _runnable(tasks: List[Task]) -> List[Task]:
 
     out: List[Task] = []
     for t in tasks:
-        if t.status != "pending":
+        if t.status != "pending" and not _is_retryable(t):
             continue
         if all(done(dep) for dep in t.depends_on):
             out.append(t)
