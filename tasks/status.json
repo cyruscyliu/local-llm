@@ -126,7 +126,7 @@
     },
     {
       "id": "11_setup_grafana",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "10_setup_prometheus"
       ],
