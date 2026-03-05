@@ -67,6 +67,25 @@ print('OK')
 "
 }
 
+get_retryable_deps() {
+    local task_id="$1"
+    python3 -c "
+import json
+with open('$STATUS_JSON') as f:
+    data = json.load(f)
+idx = {t['id']: t for t in data['tasks']}
+task = idx.get('$task_id')
+if not task:
+    raise SystemExit(1)
+for dep in task.get('depends_on', []):
+    d = idx.get(dep)
+    if not d:
+        continue
+    if d.get('status') == 'failed' and d.get('retries', 0) < d.get('max_retries', 3):
+        print(dep)
+"
+}
+
 get_task_retries() {
     local task_id="$1"
     python3 -c "

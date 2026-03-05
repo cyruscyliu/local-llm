@@ -32,7 +32,6 @@ AUTO_COMMIT="${CODING_AGENT_AUTO_COMMIT:-true}"
 TASK_TIMEOUT="${CODING_AGENT_TASK_TIMEOUT:-30m}"
 LOG_FILE="${CODING_AGENT_LOG:-}"
 DISCORD_WEBHOOK_URL="${CODING_AGENT_DISCORD_WEBHOOK_URL:-}"
-DISCORD_NOTIFY_ON_BLOCKED="${CODING_AGENT_DISCORD_NOTIFY_ON_BLOCKED:-true}"
 DISCORD_NOTIFY_ON_FAILED="${CODING_AGENT_DISCORD_NOTIFY_ON_FAILED:-false}"
 DISCORD_NOTIFY_ON_DONE="${CODING_AGENT_DISCORD_NOTIFY_ON_DONE:-false}"
 
@@ -49,7 +48,6 @@ if [[ -f "$CONFIG_FILE" ]]; then
             task_timeout)       TASK_TIMEOUT="$value" ;;
             log_file)           LOG_FILE="$value" ;;
             discord_webhook_url)             DISCORD_WEBHOOK_URL="$value" ;;
-            discord_notify_on_blocked)       DISCORD_NOTIFY_ON_BLOCKED="$value" ;;
             discord_notify_on_failed)        DISCORD_NOTIFY_ON_FAILED="$value" ;;
             discord_notify_on_done)          DISCORD_NOTIFY_ON_DONE="$value" ;;
         esac
@@ -100,7 +98,6 @@ Environment:
   CODING_AGENT_LOG              Log file path
   CODING_AGENT_CUSTOM_CMD       Command for 'custom' backend
   CODING_AGENT_DISCORD_WEBHOOK_URL            Discord webhook URL (optional)
-  CODING_AGENT_DISCORD_NOTIFY_ON_BLOCKED      Notify when a task becomes blocked (default: true)
   CODING_AGENT_DISCORD_NOTIFY_ON_FAILED       Notify on failed verification (default: false)
   CODING_AGENT_DISCORD_NOTIFY_ON_DONE         Notify on task completion (default: false)
   GEMINI_API_KEY                Required for 'gemini' backend
@@ -402,6 +399,14 @@ run_task() {
 
     # Check dependencies
     if ! check_dependencies "$task_id" > /dev/null 2>&1; then
+        local retryable_dep=""
+        retryable_dep="$(get_retryable_deps "$task_id" | head -n 1 || true)"
+        if [[ -n "$retryable_dep" ]]; then
+            log_warn "Unmet dependencies for ${task_id}; retrying dependency ${retryable_dep}"
+            discord_post "RETRYING_DEP: ${task_id} -> ${retryable_dep}"
+            run_task "$retryable_dep" || true
+            return 1
+        fi
         log_error "Unmet dependencies for ${task_id}"
         discord_post "SKIPPED: ${task_id} — unmet dependencies"
         return 1

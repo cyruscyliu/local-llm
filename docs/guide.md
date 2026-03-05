@@ -103,7 +103,6 @@ Task statuses:
 | `in_progress` | Actively being worked on                             |
 | `done`        | Verified and complete                                |
 | `failed`      | Verification failed; will be retried                 |
-| `blocked`     | Retries exhausted; requires a human decision / fix   |
 
 ---
 
@@ -185,7 +184,7 @@ Do **not** create `project_v2.md` or `project_2026.md`. Keep one file updated in
 ### Modify an existing task
 
 - Edit the task file directly.
-- If a task is `blocked` or `failed` and you fixed the issue, reset it in `tasks/status.json`:
+- If a task is `failed` and you fixed the issue, reset it in `tasks/status.json`:
 
   ```json
   {
@@ -231,14 +230,14 @@ Configure via `configs/coding-agent.yaml`, environment variables (`CODING_AGENT_
 4. Build a prompt from the task file and send it to the LLM backend
 5. Run the task's verification commands
 6. If verification passes: mark `done`, record outputs, git commit
-7. If verification fails: increment retries; if retries >= max_retries, mark `blocked`
+7. If verification fails: increment retries and keep the task `failed`
 8. Repeat (in `--loop` mode)
 
 ### Error Handling
 
 - Each task has a `max_retries` (default: 3)
 - On failure: increment retry counter, log the error in `status.json`
-- After max retries: mark as `blocked`, skip to the next independent task
+- After max retries: keep the task `failed`, skip to the next independent task
 - The agent never loops forever on a broken task
 
 ### Safety Boundaries
@@ -252,12 +251,12 @@ The agent must never:
 
 ### Human Escalation
 
-When a task is `blocked`, the agent logs what it tried and why it failed. A human reviews blocked tasks and either:
+When a task is `failed`, the agent logs what it tried and why it failed. A human reviews failed tasks and either:
 - Fixes the underlying issue and resets status to `pending`
 - Modifies the task definition
 - Removes the task
 
-The agent continues working on non-blocked tasks while waiting.
+The agent continues working on other tasks while waiting.
 
 ### Running Unattended
 
@@ -364,8 +363,8 @@ jq -r '
   | .id
 ' tasks/status.json
 
-# Show blocked tasks with their last error
-jq -r '.tasks[] | select(.status == "blocked") | "\(.id)\t\(.error)"' tasks/status.json
+# Show failed tasks with their last error
+jq -r '.tasks[] | select(.status == "failed") | "\(.id)\t\(.error)"' tasks/status.json
 
 # Reset a task to pending
 jq '(.tasks[] | select(.id == "TASK_ID")) |= (.status = "pending" | .retries = 0 | .error = null)' \
@@ -401,7 +400,7 @@ If verification passes:
 If verification fails:
 - increment retries
 - write a short error into "error"
-- if retries >= max_retries, mark it "blocked"
+- keep it "failed" even if retries >= max_retries
 ```
 
 ### Work on a specific task
@@ -458,10 +457,10 @@ If you want to reuse this approach in a different project:
 3. Keep tasks small and verifiable; treat `tasks/status.json` as the roadmap.
 4. Only add automation/agents after the human workflow feels solid.
 
-### Fix a blocked task
+### Fix a failed task
 
 ```
-Task NN_task_name is blocked. Read the error in tasks/status.json
+Task NN_task_name failed. Read the error in tasks/status.json
 and the task file tasks/NN_task_name.md.
 Diagnose the issue, fix it, reset the task status to pending with
 retries at 0, and re-run it.
@@ -480,9 +479,9 @@ pending task.
 
 ```
 Read tasks/status.json and summarize:
-- How many tasks are done, pending, blocked
+- How many tasks are done, pending, failed
 - What the next runnable tasks are
-- Any errors or blocked tasks that need attention
+- Any errors or failed tasks that need attention
 ```
 
 ### Scale the platform

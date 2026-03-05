@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
-STATUSES = {"pending", "in_progress", "done", "failed", "blocked"}
+STATUSES = {"pending", "in_progress", "done", "failed"}
 
 
 @dataclass(frozen=True)
