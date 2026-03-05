@@ -5,7 +5,6 @@
       "status": "done",
       "depends_on": [],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {
         "generated": true
       },
@@ -18,7 +17,6 @@
         "00_generate_task_plan"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -29,7 +27,6 @@
         "01_setup_repo_structure"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -40,7 +37,6 @@
         "02_create_docker_compose_skeleton"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -51,7 +47,6 @@
         "02_create_docker_compose_skeleton"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -62,7 +57,6 @@
         "02_create_docker_compose_skeleton"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -73,7 +67,6 @@
         "02_create_docker_compose_skeleton"
       ],
       "retries": 3,
-      "max_retries": 3,
       "outputs": {},
       "error": "verification commands failed"
     },
@@ -86,7 +79,6 @@
         "06_deploy_vllm"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -97,7 +89,6 @@
         "07_deploy_litellm"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -109,7 +100,6 @@
         "07_deploy_litellm"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -120,7 +110,6 @@
         "02_create_docker_compose_skeleton"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -131,7 +120,6 @@
         "10_setup_prometheus"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -142,7 +130,6 @@
         "10_setup_prometheus"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -153,7 +140,6 @@
         "10_setup_prometheus"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": "verification commands failed"
     },
@@ -166,7 +152,6 @@
         "13_setup_nvidia_gpu_exporter"
       ],
       "retries": 2,
-      "max_retries": 3,
       "outputs": {},
       "error": "verification commands failed"
     },
@@ -178,7 +163,6 @@
         "14_configure_observability_dashboards"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     },
@@ -189,7 +173,6 @@
         "06_deploy_vllm"
       ],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     }

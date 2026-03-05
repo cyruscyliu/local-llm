@@ -82,7 +82,6 @@ Each entry in `tasks/status.json` follows this schema:
   "status": "pending",
   "depends_on": ["id_of_dependency"],
   "retries": 0,
-  "max_retries": 3,
   "outputs": {},
   "error": null
 }
@@ -235,10 +234,8 @@ Configure via `configs/coding-agent.yaml`, environment variables (`CODING_AGENT_
 
 ### Error Handling
 
-- Each task has a `max_retries` (default: 3)
 - On failure: increment retry counter, log the error in `status.json`
-- After max retries: keep the task `failed`, skip to the next independent task
-- The agent never loops forever on a broken task
+- Failed tasks are always eligible for retry (no max retry cutoff)
 
 ### Safety Boundaries
 
@@ -400,7 +397,7 @@ If verification passes:
 If verification fails:
 - increment retries
 - write a short error into "error"
-- keep it "failed" even if retries >= max_retries
+- keep it "failed"; failed tasks are always retryable
 ```
 
 ### Work on a specific task

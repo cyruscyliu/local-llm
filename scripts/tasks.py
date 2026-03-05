@@ -28,7 +28,6 @@ class Task:
     status: str
     depends_on: List[str]
     retries: int
-    max_retries: int
     outputs: Dict[str, Any]
     error: Optional[str]
 
@@ -65,7 +64,6 @@ def _load_tasks(status_path: str) -> Tuple[Dict[str, Any], List[Task]]:
                 status=t["status"],
                 depends_on=list(t.get("depends_on", [])),
                 retries=int(t.get("retries", 0)),
-                max_retries=int(t.get("max_retries", 3)),
                 outputs=dict(t.get("outputs", {})),
                 error=t.get("error", None),
             )
@@ -86,7 +84,7 @@ def _task_index(tasks: Iterable[Task]) -> Dict[str, Task]:
 
 
 def _is_retryable(task: Task) -> bool:
-    return task.status == "failed" and task.retries < task.max_retries
+    return task.status == "failed"
 
 
 def _runnable(tasks: List[Task]) -> List[Task]:

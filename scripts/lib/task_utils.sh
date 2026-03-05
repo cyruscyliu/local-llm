@@ -81,7 +81,7 @@ for dep in task.get('depends_on', []):
     d = idx.get(dep)
     if not d:
         continue
-    if d.get('status') == 'failed' and d.get('retries', 0) < d.get('max_retries', 3):
+    if d.get('status') == 'failed':
         print(dep)
 "
 }
@@ -95,19 +95,6 @@ with open('$STATUS_JSON') as f:
 for t in data['tasks']:
     if t['id'] == '$task_id':
         print(t.get('retries', 0))
-        break
-"
-}
-
-get_task_max_retries() {
-    local task_id="$1"
-    python3 -c "
-import json
-with open('$STATUS_JSON') as f:
-    data = json.load(f)
-for t in data['tasks']:
-    if t['id'] == '$task_id':
-        print(t.get('max_retries', 3))
         break
 "
 }

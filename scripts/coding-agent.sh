@@ -206,7 +206,6 @@ TASK
       "status": "pending",
       "depends_on": [],
       "retries": 0,
-      "max_retries": 3,
       "outputs": {},
       "error": null
     }
