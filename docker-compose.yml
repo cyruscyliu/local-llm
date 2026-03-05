@@ -67,3 +67,22 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+  grafana:
+    image: grafana/grafana
+    user: "0"
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+      - ./configs/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    environment:
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    depends_on:
+      - prometheus
