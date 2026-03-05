@@ -62,7 +62,7 @@
     },
     {
       "id": "06_deploy_vllm",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "02_create_docker_compose_skeleton"
       ],
