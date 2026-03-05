@@ -35,7 +35,7 @@
     },
     {
       "id": "03_deploy_postgres",
-      "status": "in_progress",
+      "status": "pending",
       "depends_on": [
         "02_create_docker_compose_skeleton"
       ],
