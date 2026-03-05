@@ -13,7 +13,7 @@
     },
     {
       "id": "01_setup_repo_structure",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "00_generate_task_plan"
       ],
