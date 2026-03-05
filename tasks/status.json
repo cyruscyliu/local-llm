@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "id": "00_generate_task_plan",
+      "status": "in_progress",
+      "depends_on": [],
+      "retries": 0,
+      "max_retries": 3,
+      "outputs": {},
+      "error": null
+    }
+  ]
+}
