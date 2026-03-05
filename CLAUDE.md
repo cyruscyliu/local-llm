@@ -21,6 +21,7 @@ Read `docs/guide.md` for how the task system works.
 - Make all changes idempotent (safe to re-run if interrupted).
 - Only modify files within this repository.
 - Do not modify `tasks/status.json` -- the outer agent script handles status tracking.
+- You MAY modify task files (`tasks/<id>.md`) if the steps or verification commands are wrong.
 - Do not run destructive commands (`rm -rf /`, `docker system prune -af`, etc.).
 - Do not push to remote repositories.
 - Do not commit -- the outer script handles git commits.
