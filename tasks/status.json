@@ -84,7 +84,7 @@
     },
     {
       "id": "08_deploy_open_webui",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "07_deploy_litellm"
       ],
