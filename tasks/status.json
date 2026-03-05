@@ -46,7 +46,7 @@
     },
     {
       "id": "04_deploy_redis",
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "02_create_docker_compose_skeleton"
       ],
