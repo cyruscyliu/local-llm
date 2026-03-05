@@ -148,11 +148,11 @@
     },
     {
       "id": "13_setup_nvidia_gpu_exporter",
-      "status": "failed",
+      "status": "pending",
       "depends_on": [
         "10_setup_prometheus"
       ],
-      "retries": 1,
+      "retries": 0,
       "max_retries": 3,
       "outputs": {},
       "error": "verification commands failed"
