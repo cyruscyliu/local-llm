@@ -94,14 +94,14 @@
     },
     {
       "id": "09_configure_nginx_reverse_proxy",
-      "status": "in_progress",
+      "status": "failed",
       "depends_on": [
         "08_deploy_open_webui",
         "07_deploy_litellm"
       ],
-      "retries": 0,
+      "retries": 1,
       "outputs": {},
-      "error": null
+      "error": "verification failed: local-llm_vllm_1 is up-to-date\nlocal-llm_redis_1 is up-to-date\nlocal-llm_postgres_1 is up-to-date\nlocal-llm_litellm_1 is up-to-date\nStarting local-llm_open-webui_1 ... \r\nStarting local-llm_open-webui_1 ... done\r\nlocal-llm_nginx_1 is up-to-date\ntemplate parsing error: template: :1:8: executing \"\" at <.State.Health.Status>: map has no entry for key \"Health\"\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\r  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0\r  0   157    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0\ncurl: (22) The requested URL returned error: 502\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r  0    22    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\ncurl: (22) The requested URL returned error: 404"
     },
     {
       "id": "10_setup_prometheus",
