@@ -490,6 +490,10 @@ main() {
         return $?
     fi
 
+    local last_failed_task=""
+    local stall_count=0
+    local max_stall=3
+
     while true; do
         local next_task
         next_task="$(get_next_task)"
@@ -512,7 +516,22 @@ main() {
             break
         fi
 
-        run_task "$next_task" || true
+        if run_task "$next_task"; then
+            last_failed_task=""
+            stall_count=0
+        else
+            if [[ "$next_task" == "$last_failed_task" ]]; then
+                stall_count=$((stall_count + 1))
+                if [[ "$stall_count" -ge "$max_stall" ]]; then
+                    log_error "Task ${next_task} failed ${max_stall} times in a row with no progress, stopping"
+                    discord_post "STALLED: ${next_task} failed ${max_stall} times consecutively, loop stopped"
+                    break
+                fi
+            else
+                last_failed_task="$next_task"
+                stall_count=1
+            fi
+        fi
 
         if [[ "$LOOP" != "true" ]]; then
             break
