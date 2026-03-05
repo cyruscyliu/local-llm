@@ -1,9 +1,18 @@
 model_list:
-  - model_name: "vllm-model"
+  - model_name: "qwen-7b"
     litellm_params:
       model: "openai/Qwen/Qwen2.5-7B-Instruct"
       api_base: "http://vllm:8000/v1"
       api_key: "sk-123"
+  # Uncomment and add your API keys to enable cloud models:
+  # - model_name: "gpt-4o"
+  #   litellm_params:
+  #     model: "gpt-4o"
+  #     api_key: "os.environ/OPENAI_API_KEY"
+  # - model_name: "claude-sonnet"
+  #   litellm_params:
+  #     model: "claude-sonnet-4-20250514"
+  #     api_key: "os.environ/ANTHROPIC_API_KEY"
 
 general_settings:
   database_url: "postgresql://app_user:app_password@postgres:5432/app_db"
