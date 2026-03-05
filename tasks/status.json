@@ -148,7 +148,7 @@
     },
     {
       "id": "13_setup_nvidia_gpu_exporter",
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         "10_setup_prometheus"
       ],
