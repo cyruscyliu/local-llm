@@ -12,6 +12,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -214,6 +215,8 @@ def run_agent(prompt):
         return 1
 
     contents = [{"role": "user", "parts": [{"text": prompt}]}]
+    last_cmd = None
+    repeat_count = 0
 
     for turn in range(MAX_TURNS):
         log(f"turn {turn + 1}/{MAX_TURNS}")
@@ -265,6 +268,27 @@ def run_agent(prompt):
             if "content" in log_args and len(log_args["content"]) > 100:
                 log_args["content"] = log_args["content"][:100] + "..."
             log(f"  {name}({json.dumps(log_args)})")
+
+            # Detect repeated identical commands and throttle
+            call_key = f"{name}:{json.dumps(args, sort_keys=True)}"
+            if call_key == last_cmd:
+                repeat_count += 1
+                if repeat_count >= 3:
+                    result = f"ERROR: Same command repeated {repeat_count} times. The service may need time to start. Try a different approach or add a sleep."
+                    log(f"  throttled: repeated {repeat_count} times")
+                    tool_responses.append(
+                        {
+                            "functionResponse": {
+                                "name": name,
+                                "response": {"result": result},
+                            }
+                        }
+                    )
+                    continue
+                time.sleep(5)
+            else:
+                last_cmd = call_key
+                repeat_count = 0
 
             result = execute_tool(name, args)
 
