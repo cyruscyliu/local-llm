@@ -350,16 +350,12 @@ handle_failure() {
         log_error "Task ${task_id} blocked after ${retries} retries"
         update_task_status "$task_id" "blocked" "$error_msg"
         do_status_commit "$task_id" "blocked"
-        if [[ "$DISCORD_NOTIFY_ON_BLOCKED" == "true" ]]; then
-            discord_post "ALERT: Task blocked: ${task_id}\nError: ${error_msg}\nRepo: ${REPO_ROOT}"
-        fi
+        discord_post "BLOCKED: ${task_id} after ${retries} retries\nError: ${error_msg}"
     else
         log_warn "Task ${task_id} failed (retry ${retries}/${max_retries}): ${error_msg}"
         update_task_status "$task_id" "failed" "$error_msg"
         do_status_commit "$task_id" "failed"
-        if [[ "$DISCORD_NOTIFY_ON_FAILED" == "true" ]]; then
-            discord_post "WARN: Task failed: ${task_id} (${retries}/${max_retries})\nError: ${error_msg}\nRepo: ${REPO_ROOT}"
-        fi
+        discord_post "FAILED: ${task_id} (${retries}/${max_retries})\nError: ${error_msg}"
     fi
 }
 
@@ -377,10 +373,12 @@ run_task() {
     # Check dependencies
     if ! check_dependencies "$task_id" > /dev/null 2>&1; then
         log_error "Unmet dependencies for ${task_id}"
+        discord_post "SKIPPED: ${task_id} — unmet dependencies"
         return 1
     fi
 
     log_info "=== Starting task: ${task_id} (backend: ${BACKEND}) ==="
+    discord_post "STARTED: ${task_id} (backend: ${BACKEND})"
 
     # Build the prompt
     local prompt
@@ -399,6 +397,7 @@ run_task() {
     do_status_commit "$task_id" "in_progress"
 
     # Invoke the LLM backend
+    discord_post "INVOKING: ${task_id} — backend '${BACKEND}', timeout ${TASK_TIMEOUT}"
     log_info "Invoking backend '${BACKEND}' for task ${task_id}..."
     local agent_exit=0
     if [[ -n "$LOG_FILE" ]]; then
@@ -419,14 +418,13 @@ run_task() {
     fi
 
     # Run verification
+    discord_post "VERIFYING: ${task_id}"
     if run_verification "$task_id"; then
         log_info "Verification passed for ${task_id}"
         do_git_commit "$task_id"
         update_task_status "$task_id" "done"
         do_status_commit "$task_id" "done"
-        if [[ "$DISCORD_NOTIFY_ON_DONE" == "true" ]]; then
-            discord_post "OK: Task done: ${task_id}\nRepo: ${REPO_ROOT}"
-        fi
+        discord_post "DONE: ${task_id}"
         log_info "=== Task ${task_id} completed ==="
         return 0
     else
@@ -460,6 +458,7 @@ main() {
 
         if [[ -z "$next_task" ]]; then
             log_info "No runnable tasks found"
+            discord_post "IDLE: No runnable tasks found"
             if [[ "$DRY_RUN" == "true" ]]; then
                 echo "next_task: (none)"
             fi
