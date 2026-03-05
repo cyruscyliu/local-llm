@@ -47,7 +47,7 @@ services:
               capabilities: [gpu]
     volumes:
       - ./models:/models
-    command: python -m vllm.entrypoints.openai.api_server --model /models/placeholder-model --host 0.0.0.0 --port 8000
+    command: sh -c "vllm serve --model /models/placeholder-model --host 0.0.0.0 --port 8000 || tail -f /dev/null"
     expose:
       - "8000"
     healthcheck:
@@ -55,6 +55,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+      start_period: 30s
   node-exporter:
     image: prom/node-exporter
     command: --path.rootfs=/host

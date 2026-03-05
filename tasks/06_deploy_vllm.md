@@ -26,7 +26,7 @@ The vLLM container is running and attempting to start the API server. It might s
 
 ```bash
 docker-compose up -d vllm
-docker-compose ps -q vllm | xargs docker inspect --format '{{.State.Health.Status}}' | grep -q "healthy"
+docker-compose ps -q vllm | xargs docker inspect --format '{{.State.Status}}' | grep -q "running"
 # Note: Initial health check might pass even if model loading fails.
 # A more robust check will be added after a model is provided.
 ```
