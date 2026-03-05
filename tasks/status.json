@@ -14,7 +14,9 @@
     {
       "id": "01_setup_repo_structure",
       "status": "pending",
-      "depends_on": ["00_generate_task_plan"],
+      "depends_on": [
+        "00_generate_task_plan"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -23,7 +25,9 @@
     {
       "id": "02_create_docker_compose_skeleton",
       "status": "pending",
-      "depends_on": ["01_setup_repo_structure"],
+      "depends_on": [
+        "01_setup_repo_structure"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -32,7 +36,9 @@
     {
       "id": "03_deploy_postgres",
       "status": "pending",
-      "depends_on": ["02_create_docker_compose_skeleton"],
+      "depends_on": [
+        "02_create_docker_compose_skeleton"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -41,7 +47,9 @@
     {
       "id": "04_deploy_redis",
       "status": "pending",
-      "depends_on": ["02_create_docker_compose_skeleton"],
+      "depends_on": [
+        "02_create_docker_compose_skeleton"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -50,7 +58,9 @@
     {
       "id": "05_deploy_qdrant",
       "status": "pending",
-      "depends_on": ["02_create_docker_compose_skeleton"],
+      "depends_on": [
+        "02_create_docker_compose_skeleton"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -59,7 +69,9 @@
     {
       "id": "06_deploy_vllm",
       "status": "pending",
-      "depends_on": ["02_create_docker_compose_skeleton"],
+      "depends_on": [
+        "02_create_docker_compose_skeleton"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -68,7 +80,11 @@
     {
       "id": "07_deploy_litellm",
       "status": "pending",
-      "depends_on": ["03_deploy_postgres", "04_deploy_redis", "06_deploy_vllm"],
+      "depends_on": [
+        "03_deploy_postgres",
+        "04_deploy_redis",
+        "06_deploy_vllm"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -77,7 +93,9 @@
     {
       "id": "08_deploy_open_webui",
       "status": "pending",
-      "depends_on": ["07_deploy_litellm"],
+      "depends_on": [
+        "07_deploy_litellm"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -86,7 +104,10 @@
     {
       "id": "09_configure_nginx_reverse_proxy",
       "status": "pending",
-      "depends_on": ["08_deploy_open_webui", "07_deploy_litellm"],
+      "depends_on": [
+        "08_deploy_open_webui",
+        "07_deploy_litellm"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -95,7 +116,9 @@
     {
       "id": "10_setup_prometheus",
       "status": "pending",
-      "depends_on": ["02_create_docker_compose_skeleton"],
+      "depends_on": [
+        "02_create_docker_compose_skeleton"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -104,7 +127,9 @@
     {
       "id": "11_setup_grafana",
       "status": "pending",
-      "depends_on": ["10_setup_prometheus"],
+      "depends_on": [
+        "10_setup_prometheus"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -113,7 +138,9 @@
     {
       "id": "12_setup_node_exporter",
       "status": "pending",
-      "depends_on": ["10_setup_prometheus"],
+      "depends_on": [
+        "10_setup_prometheus"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -122,7 +149,9 @@
     {
       "id": "13_setup_nvidia_gpu_exporter",
       "status": "pending",
-      "depends_on": ["10_setup_prometheus"],
+      "depends_on": [
+        "10_setup_prometheus"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -131,7 +160,11 @@
     {
       "id": "14_configure_observability_dashboards",
       "status": "pending",
-      "depends_on": ["11_setup_grafana", "12_setup_node_exporter", "13_setup_nvidia_gpu_exporter"],
+      "depends_on": [
+        "11_setup_grafana",
+        "12_setup_node_exporter",
+        "13_setup_nvidia_gpu_exporter"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -140,7 +173,10 @@
     {
       "id": "15_create_maintenance_scripts",
       "status": "pending",
-      "depends_on": ["09_configure_nginx_reverse_proxy", "14_configure_observability_dashboards"],
+      "depends_on": [
+        "09_configure_nginx_reverse_proxy",
+        "14_configure_observability_dashboards"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
@@ -149,7 +185,9 @@
     {
       "id": "16_add_model_to_vllm",
       "status": "pending",
-      "depends_on": ["06_deploy_vllm"],
+      "depends_on": [
+        "06_deploy_vllm"
+      ],
       "retries": 0,
       "max_retries": 3,
       "outputs": {},
