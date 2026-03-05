@@ -1,7 +1,7 @@
 model_list:
   - model_name: "vllm-model"
     litellm_params:
-      model: "openai/vllm"
+      model: "openai/HuggingFaceH4/tiny-random-LlamaForCausalLM"
       api_base: "http://vllm:8000/v1"
       api_key: "sk-123"
 
