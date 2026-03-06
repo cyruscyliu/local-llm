@@ -21,6 +21,7 @@ general_settings:
   rpm: 120
   tpm: 120000
   max_budget: 50
+  master_key: "os.environ/LITELLM_MASTER_KEY"
   database_url: "os.environ/LITELLM_DATABASE_URL"
   redis_url: "redis://redis:6379"
   host: "0.0.0.0"
