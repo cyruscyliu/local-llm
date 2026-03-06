@@ -25,3 +25,7 @@ general_settings:
   redis_url: "redis://redis:6379"
   host: "0.0.0.0"
   port: 4000
+
+litellm_settings:
+  callbacks: ["prometheus"]
+  require_auth_for_metrics_endpoint: true
