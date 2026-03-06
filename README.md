@@ -34,6 +34,34 @@ export GEMINI_API_KEY=...
 export CODING_AGENT_DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
 ```
 
+## HTTPS (Internal CA)
+
+This deployment uses a private CA for internal/VPN-only HTTPS. Users must trust
+the CA once to avoid browser warnings. Distribute `certs/ca.crt` and have users
+install it on their devices:
+
+Windows:
+
+1. Double-click `ca.crt`.
+2. Click "Install Certificate".
+3. Choose "Local Machine" if prompted.
+4. Place in "Trusted Root Certification Authorities".
+5. Finish and restart the browser.
+
+macOS:
+
+1. Double-click `ca.crt` (opens Keychain Access).
+2. Add to the System keychain.
+3. Open the cert, set Trust to "Always Trust".
+4. Close and enter admin password.
+
+Ubuntu/Debian:
+
+```bash
+sudo cp ca.crt /usr/local/share/ca-certificates/local-llm-ca.crt
+sudo update-ca-certificates
+```
+
 ## Vibe coding and execution
 
 ```bash
