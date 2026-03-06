@@ -1,7 +1,13 @@
+x-logging: &default-logging {driver: "json-file", options: {max-size: "10m", max-file: "3"}}
+
 services:
   postgres:
     image: postgres:13
     restart: unless-stopped
+    cpus: "2.0"
+    mem_limit: 6g
+    logging: *default-logging
+    networks: [_llm-net]
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     environment:
@@ -22,6 +28,8 @@ services:
       - ./data/redis:/data
     expose:
       - "6379"
+    logging: *default-logging
+    networks: [_llm-net]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 1s
@@ -34,6 +42,8 @@ services:
       - ./data/qdrant:/qdrant/data
     expose:
       - "6333"
+    logging: *default-logging
+    networks: [_llm-net]
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/6333'"]
       interval: 5s
@@ -42,6 +52,10 @@ services:
   vllm:
     image: vllm/vllm-openai:latest
     restart: unless-stopped
+    cpus: "12.0"
+    mem_limit: 32g
+    logging: *default-logging
+    networks: [_llm-net]
     deploy:
       resources:
         reservations:
@@ -64,6 +78,10 @@ services:
   litellm:
     image: litellm/litellm:latest
     restart: unless-stopped
+    cpus: "2.0"
+    mem_limit: 4g
+    logging: *default-logging
+    networks: [_llm-net]
     command: --config /app/configs/litellm.yaml
     env_file:
       - .env
@@ -78,9 +96,12 @@ services:
       retries: 5
       start_period: 180s
     depends_on:
-      - postgres
-      - redis
-      - vllm
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      vllm:
+        condition: service_healthy
   node-exporter:
     image: prom/node-exporter
     restart: unless-stopped
@@ -95,6 +116,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    logging: *default-logging
+    networks: [_llm-net]
   prometheus:
     image: prom/prometheus
     restart: unless-stopped
@@ -108,6 +131,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    logging: *default-logging
+    networks: [_llm-net]
   grafana:
     image: grafana/grafana
     restart: unless-stopped
@@ -128,7 +153,10 @@ services:
       timeout: 3s
       retries: 5
     depends_on:
-      - prometheus
+      prometheus:
+        condition: service_healthy
+    logging: *default-logging
+    networks: [_llm-net]
   dcgm-exporter:
     image: nvidia/dcgm-exporter
     restart: unless-stopped
@@ -146,9 +174,13 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    logging: *default-logging
+    networks: [_llm-net]
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     restart: unless-stopped
+    cpus: "2.0"
+    mem_limit: 4g
     environment:
       OPENAI_API_BASE_URL: http://litellm:4000/v1
       OPENAI_API_KEY: ${OPENAI_API_KEY}
@@ -162,7 +194,10 @@ services:
       retries: 5
       start_period: 300s
     depends_on:
-      - litellm
+      litellm:
+        condition: service_healthy
+    logging: *default-logging
+    networks: [_llm-net]
   nginx:
     image: nginx:latest
     restart: unless-stopped
@@ -181,3 +216,9 @@ services:
       timeout: 3s
       retries: 5
       start_period: 600s
+    logging: *default-logging
+    networks: [_llm-net]
+
+networks:
+  _llm-net:
+    driver: bridge
