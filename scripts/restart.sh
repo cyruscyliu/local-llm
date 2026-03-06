@@ -51,7 +51,7 @@ fi
 if echo "$CHANGED_FILES" | grep -q '^docker-compose.yml'; then
     # Full recreate if compose file changed
     log "docker-compose.yml changed -- recreating all services..."
-    docker-compose up -d
+    docker compose up -d
     echo "$CURRENT_SHA" > "$MARKER_FILE"
     log "Done."
     exit 0
@@ -62,13 +62,13 @@ if [[ ${#RESTART_SERVICES[@]} -eq 0 ]]; then
     log "No service-affecting changes detected. Nothing to restart."
 else
     log "Restarting: ${RESTART_SERVICES[*]}"
-    docker-compose restart "${RESTART_SERVICES[@]}"
+    docker compose restart "${RESTART_SERVICES[@]}"
 
     # Wait for restarted services to be healthy
     for svc in "${RESTART_SERVICES[@]}"; do
         log "Waiting for $svc to be healthy..."
         timeout 120 bash -c "
-            until docker-compose ps -q $svc | xargs docker inspect --format '{{.State.Health.Status}}' 2>/dev/null | grep -q healthy; do
+            until docker compose ps -q $svc | xargs docker inspect --format '{{.State.Health.Status}}' 2>/dev/null | grep -q healthy; do
                 sleep 3
             done
         " && log "  $svc: healthy" || log "  $svc: TIMEOUT (may still be starting)"
@@ -78,4 +78,4 @@ fi
 # 5. Update marker
 echo "$CURRENT_SHA" > "$MARKER_FILE"
 log "Restart complete."
-docker-compose ps
+docker compose ps

@@ -18,7 +18,7 @@ printf "%-20s %-12s %-10s %s\n" "-------" "-----" "------" "-----"
 all_healthy=true
 
 for svc in "${SERVICES[@]}"; do
-    cid="$(docker-compose ps -q "$svc" 2>/dev/null)" || true
+    cid="$(docker compose ps -q "$svc" 2>/dev/null)" || true
 
     if [[ -z "$cid" ]]; then
         printf "%-20s ${YELLOW}%-12s${NC} %-10s %s\n" "$svc" "not found" "-" "-"
