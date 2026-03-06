@@ -1,7 +1,7 @@
 model_list:
-  - model_name: "qwen-7b"
+  - model_name: "qwen-3.5-9b"
     litellm_params:
-      model: "openai/Qwen/Qwen2.5-7B-Instruct"
+      model: "openai/Qwen/Qwen3.5-9B"
       api_base: "http://vllm:8000/v1"
       api_key: "os.environ/LITELLM_API_KEY"
   # Uncomment and add your API keys to enable cloud models:
