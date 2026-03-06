@@ -3,7 +3,7 @@ model_list:
     litellm_params:
       model: "openai/Qwen/Qwen2.5-7B-Instruct"
       api_base: "http://vllm:8000/v1"
-      api_key: "sk-123"
+      api_key: "os.environ/LITELLM_API_KEY"
   # Uncomment and add your API keys to enable cloud models:
   # - model_name: "gpt-4o"
   #   litellm_params:
@@ -15,7 +15,7 @@ model_list:
   #     api_key: "os.environ/ANTHROPIC_API_KEY"
 
 general_settings:
-  database_url: "postgresql://app_user:app_password@postgres:5432/app_db"
+  database_url: "os.environ/LITELLM_DATABASE_URL"
   redis_url: "redis://redis:6379"
   host: "0.0.0.0"
   port: 4000

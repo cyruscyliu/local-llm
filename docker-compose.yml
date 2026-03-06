@@ -1,14 +1,15 @@
 services:
   postgres:
     image: postgres:13
+    restart: unless-stopped
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: app_db
-      POSTGRES_USER: app_user
-      POSTGRES_PASSWORD: app_password
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    expose:
+      - "5432"
     healthcheck:
       test: ["CMD-SHELL", "exit 0"]
       interval: 10s
@@ -16,10 +17,11 @@ services:
       retries: 10
   redis:
     image: redis:7.0-alpine
+    restart: unless-stopped
     volumes:
       - ./data/redis:/data
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 1s
@@ -27,10 +29,11 @@ services:
       retries: 5
   qdrant:
     image: qdrant/qdrant
+    restart: unless-stopped
     volumes:
       - ./data/qdrant:/qdrant/data
-    ports:
-      - "6333:6333"
+    expose:
+      - "6333"
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/6333'"]
       interval: 5s
@@ -38,6 +41,7 @@ services:
       retries: 5
   vllm:
     image: vllm/vllm-openai:latest
+    restart: unless-stopped
     deploy:
       resources:
         reservations:
@@ -48,7 +52,7 @@ services:
     volumes:
       - ./models:/models
     entrypoint: python3 -m vllm.entrypoints.openai.api_server
-    command: ["--model", "Qwen/Qwen2.5-7B-Instruct", "--host", "0.0.0.0", "--port", "8000", "--max-model-len", "8192"]
+    command: ["--model", "Qwen/Qwen2.5-7B-Instruct", "--host", "0.0.0.0", "--port", "8000", "--max-model-len", "8192", "--gpu-memory-utilization", "0.90", "--max-num-seqs", "16"]
     expose:
       - "8000"
     healthcheck:
@@ -59,7 +63,10 @@ services:
       start_period: 120s
   litellm:
     image: litellm/litellm:latest
+    restart: unless-stopped
     command: --config /app/configs/litellm.yaml
+    env_file:
+      - .env
     volumes:
       - ./configs/litellm.yaml:/app/configs/litellm.yaml
     ports:
@@ -76,6 +83,7 @@ services:
       - vllm
   node-exporter:
     image: prom/node-exporter
+    restart: unless-stopped
     command: --path.rootfs=/host
     pid: host
     volumes:
@@ -89,6 +97,7 @@ services:
       retries: 5
   prometheus:
     image: prom/prometheus
+    restart: unless-stopped
     volumes:
       - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data/prometheus:/prometheus
@@ -101,6 +110,7 @@ services:
       retries: 5
   grafana:
     image: grafana/grafana
+    restart: unless-stopped
     user: "0"
     ports:
       - "3001:3000"
@@ -121,6 +131,7 @@ services:
       - prometheus
   dcgm-exporter:
     image: nvidia/dcgm-exporter
+    restart: unless-stopped
     deploy:
       resources:
         reservations:
@@ -137,9 +148,10 @@ services:
       retries: 5
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
+    restart: unless-stopped
     environment:
       OPENAI_API_BASE_URL: http://litellm:4000/v1
-      OPENAI_API_KEY: sk-1234
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
       ENABLE_OLLAMA_API: "false"
     ports:
       - "3000:8080"
@@ -153,6 +165,7 @@ services:
       - litellm
   nginx:
     image: nginx:latest
+    restart: unless-stopped
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
