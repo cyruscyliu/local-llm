@@ -495,3 +495,25 @@ Update docs/project.md with the change.
 Create a task file with the implementation steps.
 Add it to tasks/status.json with the correct dependencies.
 ```
+## Daily Ops Report (Cron)
+
+Send a daily summary of config/observability/maintenance/updates to Discord.
+
+1. Ensure `.env` has `DISCORD_WEBHOOK_URL` or `CODING_AGENT_DISCORD_WEBHOOK_URL`.
+2. Make the script executable:
+
+```bash
+chmod +x scripts/daily_ops_report.sh
+```
+
+3. Set a cron job (send at 08:05 daily):
+
+```bash
+crontab -e
+```
+
+Add this line:
+
+```
+5 8 * * * /bin/bash -lc 'cd /home/debian/Projects/local-llm && ./scripts/daily_ops_report.sh >> /tmp/daily_ops_report.log 2>&1'
+```
