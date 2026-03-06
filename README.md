@@ -20,18 +20,11 @@ sudo apt-get install -y \
 
 ## Configure
 
-Agent config lives in `configs/coding-agent.yaml`. Most secrets should be
-provided via environment variables.
-
-Examples:
+Create your environment file and update secrets/keys:
 
 ```bash
-# Choose an LLM backend
-export CODING_AGENT_BACKEND=gemini
-export GEMINI_API_KEY=...
-
-# Create a discord webhook
-export CODING_AGENT_DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
+cp .env.example .env
+# Then edit .env with your real values.
 ```
 
 ## HTTPS (Internal CA)
@@ -62,25 +55,13 @@ sudo cp ca.crt /usr/local/share/ca-certificates/local-llm-ca.crt
 sudo update-ca-certificates
 ```
 
-## Vibe coding and execution
-
-```bash
-./scripts/coding-agent.sh --dry-run
-./scripts/coding-agent-wrapper.sh --loop
-```
-
-When `tasks/status.json` is missing/empty, the agent creates and runs
-`tasks/00_generate_task_plan.md`, which generates:
-
-- `tasks/status.json` (full dependency graph)
-- `tasks/NN_*.md` task files
-
 ## Common Commands
 
 ```bash
-make task-summary
-make task-runnable
-make task-next
+./scripts/start.sh
+./scripts/health.sh
+./scripts/check-config.sh
+./scripts/restart.sh
 ```
 
 ## License

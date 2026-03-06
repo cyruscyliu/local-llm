@@ -10,7 +10,7 @@ This document describes a **lab LLM platform** running on a
 -   OpenAI-compatible APIs
 -   Document RAG capability
 -   Observability and monitoring
--   Autonomous deployment and maintenance via AI agents
+-   Automated deployment and maintenance workflows
 
 ## Expected Capacity
 
@@ -47,7 +47,7 @@ Benefits:
 
 -   Development isolated from production
 -   Reproducible deployments
--   Automated updates via coding agent (see [guide.md](guide.md#coding-agent))
+-   Automated updates via scripts and CI/CD workflows
 
 ------------------------------------------------------------------------
 
@@ -211,7 +211,7 @@ Log sources:
 -   reverse proxy
 -   system metrics
 
-Logs enable debugging and agent-driven automation.
+Logs enable debugging and operational automation.
 
 ------------------------------------------------------------------------
 
@@ -236,7 +236,7 @@ error rate \> 5%
 
 # 11. Automation Hooks
 
-Expose control mechanisms for agents and operators.
+Expose control mechanisms for operators and automation scripts.
 
 Example maintenance scripts:
 
@@ -249,20 +249,19 @@ Example command:
 
 docker restart vllm
 
-These scripts are callable by the autonomous maintenance agent
-(see [guide.md](guide.md#maintenance-agent)).
+These scripts are callable by maintenance automation and operators.
 
 ------------------------------------------------------------------------
 
-# 12. Agents
+# 12. Automation
 
-This project uses two types of autonomous agents:
+This project uses automation plus operator workflows:
 
-1.  **Coding Agent** -- builds and deploys the platform by working
-    through task files. See [guide.md](guide.md#coding-agent).
+1.  **Deployment Automation** -- builds and deploys platform components
+    using scripts and CI/CD workflows.
 
-2.  **Maintenance Agent** -- monitors and maintains the running platform.
-    See [guide.md](guide.md#maintenance-agent).
+2.  **Maintenance Automation** -- monitors and maintains the running
+    platform using health checks, alerts, and operational scripts.
 
 ------------------------------------------------------------------------
 
@@ -277,11 +276,12 @@ The system provides:
 -   Metrics dashboards
 -   Monitoring and logging
 -   Automation-ready infrastructure
--   Autonomous task-driven deployment
+-   Automated deployment workflows
 
 Lab members interact only with:
 
 -   Web UI
 -   APIs
 
-Infrastructure deployment and maintenance are automated by agents.
+Infrastructure deployment and maintenance are handled through
+automation workflows and operators.
