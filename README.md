@@ -1,5 +1,15 @@
 # Local LLM Platform
 
+## Goal
+
+Run a local LLM platform for internal multi-user chat and OpenAI-compatible API access.
+
+## Current Setup
+
+- OS: Debian 12
+- GPU: NVIDIA RTX 4090
+- Runtime: Docker + Docker Compose
+
 ## Install dependencies
 
 ```bash
@@ -8,14 +18,11 @@ sudo apt-get install -y \
   ca-certificates \
   coreutils \
   curl \
-  docker-compose \
+  docker-compose-plugin \
   docker.io \
   git \
   jq \
-  make \
-  nodejs \
-  python3 \
-  python3-pip
+  python3
 ```
 
 ## Configure
@@ -27,43 +34,32 @@ cp .env.example .env
 # Then edit .env with your real values.
 ```
 
-## HTTPS (Internal CA)
+## DevOps Workflow
 
-This deployment uses a private CA for internal/VPN-only HTTPS. Users must trust
-the CA once to avoid browser warnings. Distribute `certs/ca.crt` and have users
-install it on their devices:
-
-Windows:
-
-1. Double-click `ca.crt`.
-2. Click "Install Certificate".
-3. Choose "Local Machine" if prompted.
-4. Place in "Trusted Root Certification Authorities".
-5. Finish and restart the browser.
-
-macOS:
-
-1. Double-click `ca.crt` (opens Keychain Access).
-2. Add to the System keychain.
-3. Open the cert, set Trust to "Always Trust".
-4. Close and enter admin password.
-
-Ubuntu/Debian:
-
-```bash
-sudo cp ca.crt /usr/local/share/ca-certificates/local-llm-ca.crt
-sudo update-ca-certificates
-```
-
-## Common Commands
+1. Start the full stack:
 
 ```bash
 ./scripts/start.sh
+```
+
+2. Check runtime health:
+
+```bash
 ./scripts/health.sh
+```
+
+3. Validate configuration:
+
+```bash
 ./scripts/check-config.sh
+```
+
+4. Pull latest code and restart impacted services:
+
+```bash
 ./scripts/restart.sh
 ```
 
 ## License
 
-TBD.
+Apache License 2.0. See [LICENSE](LICENSE).
