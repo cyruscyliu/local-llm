@@ -1,23 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" \
-  -v openwebui_user="$OPENWEBUI_DB_USER" \
-  -v openwebui_pass="$OPENWEBUI_DB_PASSWORD" \
-  -v openwebui_db="$OPENWEBUI_DB_NAME" <<'SQL'
-DO $do$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = :'openwebui_user') THEN
-    EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', :'openwebui_user', :'openwebui_pass');
-  END IF;
-END
-$do$;
+escape_ident() {
+  printf '%s' "$1" | sed 's/"/""/g'
+}
 
-DO $do$
+escape_literal() {
+  printf '%s' "$1" | sed "s/'/''/g"
+}
+
+OPENWEBUI_DB_USER_IDENT="$(escape_ident "$OPENWEBUI_DB_USER")"
+OPENWEBUI_DB_NAME_IDENT="$(escape_ident "$OPENWEBUI_DB_NAME")"
+OPENWEBUI_DB_USER_LIT="$(escape_literal "$OPENWEBUI_DB_USER")"
+OPENWEBUI_DB_NAME_LIT="$(escape_literal "$OPENWEBUI_DB_NAME")"
+OPENWEBUI_DB_PASSWORD_LIT="$(escape_literal "$OPENWEBUI_DB_PASSWORD")"
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<SQL
+DO \$\$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = :'openwebui_db') THEN
-    EXECUTE format('CREATE DATABASE %I OWNER %I', :'openwebui_db', :'openwebui_user');
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${OPENWEBUI_DB_USER_LIT}') THEN
+    CREATE ROLE "${OPENWEBUI_DB_USER_IDENT}" LOGIN PASSWORD '${OPENWEBUI_DB_PASSWORD_LIT}';
   END IF;
 END
-$do$;
+\$\$;
 SQL
+
+db_exists="$(psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -tAc \
+  "SELECT 1 FROM pg_database WHERE datname = '${OPENWEBUI_DB_NAME_LIT}'")"
+
+if [ "$db_exists" != "1" ]; then
+  createdb --username "$POSTGRES_USER" --owner "$OPENWEBUI_DB_USER_IDENT" "$OPENWEBUI_DB_NAME_IDENT"
+fi
