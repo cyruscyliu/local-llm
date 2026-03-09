@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Iterable
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -82,14 +82,21 @@ def get_json(url: str, params: dict[str, str] | None = None) -> dict:
 def post_discord(message: str) -> None:
     webhook = os.environ.get("DISCORD_WEBHOOK_URL")
     if not webhook:
+        print("daily_ops_report: DISCORD_WEBHOOK_URL is not set; skipping Discord post", file=sys.stderr)
         return
     payload = json.dumps({"content": message}).encode()
     request = Request(webhook, data=payload, headers={"Content-Type": "application/json"})
     try:
         with urlopen(request, timeout=10):
             pass
+    except HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        print(
+            f"daily_ops_report: Discord webhook request failed with HTTP {exc.code}: {body}",
+            file=sys.stderr,
+        )
     except URLError:
-        pass
+        print("daily_ops_report: Discord webhook request failed: network error", file=sys.stderr)
 
 
 @dataclass
