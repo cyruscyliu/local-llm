@@ -1,9 +1,12 @@
 model_list:
-  - model_name: "qwen-3.5-9b"
+  - model_name: "os.environ/LITELLM_MODEL_NAME"
     litellm_params:
-      model: "openai/Qwen/Qwen3.5-9B"
+      model: "openai/${VLLM_SERVED_MODEL:-Qwen/Qwen3.5-9B}"
       api_base: "http://vllm:8000/v1"
       api_key: "os.environ/LITELLM_API_KEY"
+      max_tokens: "os.environ/MODEL_DEFAULT_MAX_TOKENS"
+      temperature: "os.environ/MODEL_DEFAULT_TEMPERATURE"
+      top_p: "os.environ/MODEL_DEFAULT_TOP_P"
   # Uncomment and add your API keys to enable cloud models:
   # - model_name: "gpt-4o"
   #   litellm_params:
@@ -15,12 +18,8 @@ model_list:
   #     api_key: "os.environ/ANTHROPIC_API_KEY"
 
 general_settings:
-  max_tokens: 1024
-  temperature: 0.7
-  top_p: 0.9
   rpm: 120
   tpm: 120000
-  max_budget: 50
   master_key: "os.environ/LITELLM_MASTER_KEY"
   database_url: "os.environ/LITELLM_DATABASE_URL"
   redis_url: "redis://redis:6379"
