@@ -54,10 +54,10 @@ cp .env.example .env
 ./scripts/check-config.sh
 ```
 
-4. Pull latest code and restart impacted services:
+4. Pull latest code and apply impacted service updates:
 
 ```bash
-./scripts/restart.sh
+./scripts/update.sh
 ```
 
 ## License
