@@ -31,4 +31,6 @@ general_settings:
 
 litellm_settings:
   callbacks: ["prometheus"]
-  require_auth_for_metrics_endpoint: true
+  # Prometheus scrapes this over the internal Docker network; keep it unauthenticated
+  # unless you also add a templated bearer token path for Prometheus.
+  require_auth_for_metrics_endpoint: false
