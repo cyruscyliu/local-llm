@@ -9,9 +9,8 @@ from dataclasses import dataclass
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Iterable
-from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from urllib.request import urlopen
 
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -89,20 +88,22 @@ def post_discord(message: str) -> None:
         print("daily_ops_report: DISCORD_WEBHOOK_URL is not set; skipping Discord post", file=sys.stderr)
         return
     webhook_fingerprint = f"len={len(webhook)} prefix={webhook[:32]!r} suffix={webhook[-10:]!r}"
-    payload = json.dumps({"content": message}).encode()
-    request = Request(webhook, data=payload, headers={"Content-Type": "application/json"})
-    try:
-        with urlopen(request, timeout=10):
-            pass
-    except HTTPError as exc:
-        body = exc.read().decode("utf-8", errors="replace")
+    payload = json.dumps({"content": message})
+    code, stdout, stderr = run_cmd(
+        [
+            "curl",
+            "-fsS",
+            "-H",
+            "Content-Type: application/json",
+            "-d",
+            payload,
+            webhook,
+        ]
+    )
+    if code != 0:
+        error_detail = stderr or stdout or "unknown error"
         print(
-            f"daily_ops_report: Discord webhook request failed with HTTP {exc.code}: {body} ({webhook_fingerprint})",
-            file=sys.stderr,
-        )
-    except URLError:
-        print(
-            f"daily_ops_report: Discord webhook request failed: network error ({webhook_fingerprint})",
+            f"daily_ops_report: Discord webhook request failed: {error_detail} ({webhook_fingerprint})",
             file=sys.stderr,
         )
 
