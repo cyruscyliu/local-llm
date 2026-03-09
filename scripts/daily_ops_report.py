@@ -48,6 +48,20 @@ def run_cmd(args: list[str]) -> tuple[int, str]:
     return result.returncode, result.stdout.strip()
 
 
+def run_cmd_full(args: list[str]) -> tuple[int, str, str]:
+    try:
+        result = subprocess.run(
+            args,
+            cwd=ROOT_DIR,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except FileNotFoundError:
+        return 127, "", ""
+    return result.returncode, result.stdout.strip(), result.stderr.strip()
+
+
 def strip_ansi(text: str) -> str:
     return re.sub(r"\x1B\[[0-9;]*[mK]", "", text)
 
@@ -89,7 +103,7 @@ def post_discord(message: str) -> None:
         return
     webhook_fingerprint = f"len={len(webhook)} prefix={webhook[:32]!r} suffix={webhook[-10:]!r}"
     payload = json.dumps({"content": message})
-    code, stdout, stderr = run_cmd(
+    code, stdout, stderr = run_cmd_full(
         [
             "curl",
             "-fsS",
