@@ -25,9 +25,13 @@ def load_dotenv(path: Path) -> None:
         line = raw_line.strip()
         if not line or line.startswith("#") or "=" not in line:
             continue
+        if line.startswith("export "):
+            line = line[len("export ") :].lstrip()
         key, value = line.split("=", 1)
         key = key.strip()
-        value = value.strip().strip("'").strip('"')
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
         os.environ.setdefault(key, value)
 
 
@@ -84,6 +88,7 @@ def post_discord(message: str) -> None:
     if not webhook:
         print("daily_ops_report: DISCORD_WEBHOOK_URL is not set; skipping Discord post", file=sys.stderr)
         return
+    webhook_fingerprint = f"len={len(webhook)} prefix={webhook[:32]!r} suffix={webhook[-10:]!r}"
     payload = json.dumps({"content": message}).encode()
     request = Request(webhook, data=payload, headers={"Content-Type": "application/json"})
     try:
@@ -92,11 +97,14 @@ def post_discord(message: str) -> None:
     except HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
         print(
-            f"daily_ops_report: Discord webhook request failed with HTTP {exc.code}: {body}",
+            f"daily_ops_report: Discord webhook request failed with HTTP {exc.code}: {body} ({webhook_fingerprint})",
             file=sys.stderr,
         )
     except URLError:
-        print("daily_ops_report: Discord webhook request failed: network error", file=sys.stderr)
+        print(
+            f"daily_ops_report: Discord webhook request failed: network error ({webhook_fingerprint})",
+            file=sys.stderr,
+        )
 
 
 @dataclass
