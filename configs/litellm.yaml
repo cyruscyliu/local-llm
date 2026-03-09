@@ -10,6 +10,14 @@ model_list:
       max_tokens: "os.environ/MODEL_DEFAULT_MAX_TOKENS"
       temperature: "os.environ/MODEL_DEFAULT_TEMPERATURE"
       top_p: "os.environ/MODEL_DEFAULT_TOP_P"
+  - model_name: "qwen-3.5-9b-task"
+    litellm_params:
+      model: "openai/Qwen/Qwen3.5-9B"
+      api_base: "http://vllm:8000/v1"
+      api_key: "os.environ/LITELLM_API_KEY"
+      max_tokens: "os.environ/TASK_MODEL_MAX_TOKENS"
+      temperature: "os.environ/TASK_MODEL_TEMPERATURE"
+      top_p: "os.environ/TASK_MODEL_TOP_P"
   # Uncomment and add your API keys to enable cloud models:
   # - model_name: "gpt-4o"
   #   litellm_params:
